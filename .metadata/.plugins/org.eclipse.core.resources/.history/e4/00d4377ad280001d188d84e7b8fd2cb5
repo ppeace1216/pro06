@@ -1,0 +1,37 @@
+package com.shop2.myapp.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.shop2.myapp.dto.CustomerDTO;
+import com.shop2.myapp.dto.SampleDTO;
+import com.shop2.myapp.service.AjaxService;
+
+@Controller
+@RequestMapping("/ajax/")
+public class AjaxController {
+	
+	@Resource
+	private AjaxService ajaxService;
+	
+	@GetMapping("list")
+	public String cusList(Model model) throws Exception {
+		List<CustomerDTO> list = ajaxService.cusList();
+		model.addAttribute("list", list);
+		return "ajax/list";
+	}
+	
+	@GetMapping("detail")
+	public String getCus(@RequestParam("id") String id, Model model) throws Exception {
+		CustomerDTO dto = ajaxService.getCus(id);
+		model.addAttribute("dto",dto);
+		return "ajax/detail";
+	}
+}

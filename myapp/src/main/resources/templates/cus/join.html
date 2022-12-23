@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>회원 약관 동의</title>
+	<!-- 헤드 부분 인클루드 -->
+    <th:block th:insert="common/hd"></th:block>
+<style>
+.title { padding-top:36px; padding-bottom:20px; }
+.agree_fr { width: 900px; white-space:pre-wrap; margin: 10px auto; 
+padding: 24px; border:2px solid #eee; height:600px; overflow-y:auto; }
+</style>
+</head>
+<body>
+<header id="header">
+	<!-- 헤더 부분 인클루드 -->
+ 	<th:block th:insert="common/header"></th:block>
+</header>
+	<div class="content" id="con">
+	    <div class="row column text-center">
+	      <h2 class="h1">회원가입</h2>
+	      <hr>
+	      <div class="container">
+	      	<form name="frm1" id="frm1" action="${path1 }/member/insert.do" method="post">
+			      <table id="table1">
+			      	<tbody>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">아이디</th>
+			      			<td>
+			      				<input type="text" name="id" id="id" placeholder="아이디 입력" pattern="^[a-z0-9]{5,12}" maxlength="12" required style="width:700px; float:left;">
+			      				<input type="hidden" id="idck" name="idck" value="no">
+			      			</td>
+			      			<button type="button" id="btn1">아이디 중복체크</button><br>
+            			<div id="msg"></div>
+			      		</tr>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">비밀번호</th>
+			      			<td>
+			      				<input type="password" name="pw" id="pw" placeholder="비밀번호 입력" maxlength="12" required>
+			      				<!-- pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$"  -->
+			      			</td>
+			      		</tr>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">비밀번호 확인</th>
+			      			<td>
+			      				<input type="password" name="pw2" id="pw2" placeholder="비밀번호 확인 입력" maxlength="12" required>
+			      				<!-- pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$"  -->
+			      			</td>
+			      		</tr>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">이름</th>
+			      			<td>
+			      				<input type="text" name="name" id="name" placeholder="이름 입력" maxlength="40" required>
+			      			</td>
+			      		</tr>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">생년월일</th>
+			      			<td>
+			      				<input type="date" name="birth" id="birth" placeholder="생년월일 입력" required>
+			      			</td>
+			      		</tr>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">이메일</th>
+			      			<td>
+			      				<input type="email" name="email" id="email" placeholder="이메일 입력" pattern="^\w+((\.\w+)?)+@\w+.?\w+\.\w+$" maxlength="80" required>
+			      			</td>
+			      		</tr>
+			      		<tr>
+			      			<th style="background-color:#dcdcdc">전화번호</th>
+			      			<td>
+			      				<input type="tel" name="tel" id="tel" placeholder="000-0000-0000" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{3,4}" maxlength="19" required>
+			      			</td>
+			      		</tr>
+		      			<tr>
+			      			<th style="background-color:#dcdcdc">주소</th>
+			      			<td>
+			      				<input type="text" name="addr1" id="addr1" placeholder="기본주소 입력" maxlength="150" required><br><br>
+			      				<input type="text" name="addr2" id="addr2" placeholder="상세주소 입력" maxlength="90" required><br><br>
+			      				<input type="text" name="postcode" id="postcode" placeholder="우편번호 입력" maxlength="9" required>
+			      				<input type="button" id="isAddrBtn" class="button" value="주소 입력" onclick="findAddr()">
+			      				<input type="hidden" name="addrck" id="addrck" value="no"/>
+			      			</td>
+			      		</tr>
+			      		<tr>
+			      			<td colspan="2">
+			      				<input type="submit" class="submit success button" value="회원 가입" >
+								<input type="reset" class="reset button" value="취소" >
+			      			</td>
+			      		</tr>
+			      	</tbody>
+			      </table>
+			   </form>
+			   <script>
+			    $(document).ready(function(){
+			        $("#btn1").click(function(){
+			            var id = $("#id").val();
+			            if(id==""){
+			                alert("아이디가 입력되지 않았습니다.");
+			                $("#id").focus();
+			                return false;
+			            }
+			            $.ajax({
+			                url:"/ajax/idCheck.do?id="+id,     //요청 데이터를 받아 처리하는 서버측 컨트롤러 또는 페이지 주소	//여기에 보낸단 의미!
+			                //data:id,      //post 방식으로 서버로 전송할 데이터는 적어줘야함 get이면 빼고 url에 id 적기 - string 또는 object
+			                contentType:'application/json;charset=utf-8',
+			                method:"GET",   //전송 방식 : post, get, put
+			                dataType:"json" //반환받을 데이터 타입 - json, xml, script, html
+			            }) 
+			            .done(function(res){ //요청 처리에 대한 성공시 처리할 문장
+			                console.log(res);
+			                if(res===true){
+								$("#msg").text("사용가능한 아이디입니다.");
+								$("#idck").val("yes");
+							} else {
+								$("#msg").text("현재 사용 중인 아이디입니다.");
+							}
+			            })
+			            .fail(function(xhr, status, errorThrown){  //요청 처리에 대한 실패시 처리할 문장
+			                $("#msg").text("아이디 중복 체크를 진행하지 못했습니다.");
+			            });
+			        });
+			    });
+			    </script>
+			    <script>
+			    function joinCheck(f){
+					if(f.pw.value!=f.pw2.value){
+						alert("비밀번호와 비밀번호 확인이 서로 다릅니다.");
+						f.pw.focus();
+						return false;
+					}
+					if(f.idck.value!="yes"){
+						alert("아이디 중복 체크를 하지 않으셨습니다.");
+						return false;
+					}
+				}
+			    </script>
+				<script>
+				function findAddr() {
+					new daum.Postcode({
+						oncomplete: function(data) {
+							console.log(data);
+							var roadAddr = data.roadAddress;
+							var jibunAddr = data.jibunAddress;
+							document.getElementById("postcode").value = data.zonecode;
+							if(roadAddr !== '') {
+								document.getElementById("addr1").value = roadAddr;				
+							} else if(jibunAddr !== ''){
+								document.getElementById("addr1").value = jibunAddr;
+							}
+							document.getElementById("addr2").focus();
+						}
+					}).open();
+				}
+				</script>
+				<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	      </div>
+	    </div>
+	</div>
+<footer id="footer" class="footer-nav row expanded collapse">
+<!-- 푸터 부분 인클루드 -->
+<th:block th:insert="common/footer"></th:block>
+</footer>
+</body>
+</html>

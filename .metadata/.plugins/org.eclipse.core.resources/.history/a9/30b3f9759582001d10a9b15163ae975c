@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop2.myapp.model.CustomerMapper">
+    <!-- 회원 목록 -->
+    <select id="cusList" resultType="com.shop2.myapp.dto.CustomerDTO">
+        select * from Customer
+	</select>
+	<!-- 회원 정보 보기-->
+	<select id="cusDetail" resultType="com.shop2.myapp.dto.CustomerDTO">
+		select * from customer where id = #{id}
+	</select>
+	<!-- 로그인 -->
+	<select id="loginCus" resultType="com.shop2.myapp.dto.CustomerDTO">
+		select * from customer where id = #{id}, pw = #{pw}
+	</select>
+	<!-- 회원가입 -->
+	<insert id="insertCus">
+		insert into customer (id, pw, name, email, tel, addr1, addr2, postcode) values (#{id}, #{pw}, #{name}, #{email}, #{tel}, #{addr1}, #{addr2}, #{postcode})
+	</insert>
+	<!-- 회원 정보 수정 -->
+	<update id="updateCus">
+		update customer set pw = #{pw}, name = #{name}, email = #{email}, tel = #{tel}, addr1 = #{addr1}, addr2 = #{addr2}, postcode = #{postcode} where id = #{id}
+	</update>
+	<delete id="deleteCus">
+		delete from customer where id = #{id}
+	</delete>
+</mapper>

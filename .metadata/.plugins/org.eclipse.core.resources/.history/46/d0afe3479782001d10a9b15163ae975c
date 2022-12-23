@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop2.myapp.model.CustomerMapper">
+    <select id="boardList" resultType="com.shop2.myapp.dto.BoardDTO">
+        select * from Customer
+	</select>
+	<select id="cusDetail" resultType="com.shop2.myapp.dto.BoardDTO">
+		select * from customer where id = #{id}
+	</select>
+	<insert id="insertBoard">
+		insert into board values (beq.nextval, #{title}, #{content}, sysdate, default);
+	</insert>
+	<update id="updateBoard">
+		update customer set title = #{title}
+	</update>
+	<delete id="deleteBoard">
+		delete from board where bno = #{bno}
+	</delete>
+</mapper>

@@ -1,0 +1,20 @@
+package com.shop2.myapp.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.shop2.myapp.service.CustomerService;
+
+@Controller
+@RequestMapping("/cus/")
+public class CustomerController {
+	
+	@Resource
+	private CustomerService customerService;
+	
+	@Resource
+	private HttpSession session;
+}
